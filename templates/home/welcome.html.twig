@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome to Complaint Management System{% endblock %}
+
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .welcome-header {
+            padding: 1rem 0;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .welcome-content {
+            padding: 3rem 0;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <header class="welcome-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="logo d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chat-square-text me-2" viewBox="0 0 16 16">
+                        <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                        <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                    Complaint Management System
+                </div>
+                <div>
+                    <a href="#" class="btn btn-outline-primary me-2">Sign In</a>
+                    <a href="#" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="welcome-content">
+        <div class="container">
+            <h1 class="mb-4">Welcome to our Complaint Management System</h1>
+            <p class="lead mb-5">A simple and effective way to submit and track your complaints</p>
+            
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Why use our system?</h5>
+                            <ul class="text-start">
+                                <li>Easy submission of complaints</li>
+                                <li>Real-time tracking of complaint status</li>
+                                <li>Secure and confidential handling of your information</li>
+                                <li>Quick response from our dedicated team</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <a href="#" class="btn btn-lg btn-primary">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-3 mt-5 bg-light">
+        <div class="container text-center">
+            <p class="mb-0">© 2023 Complaint Management System. All rights reserved.</p>
+        </div>
+    </footer>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
