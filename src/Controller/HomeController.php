@@ -8,7 +8,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    // Remove the root route from here to avoid conflict
+    // #[Route('/', name: 'app_home')]
+    
+    // Add a new dashboard route instead
+    #[Route('/dashboard', name: 'app_home')]
     public function index(): Response
     {
         // If user is not authenticated, redirect to welcome page
@@ -21,7 +25,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/welcome', name: 'app_welcome')]
+    #[Route('/home/welcome', name: 'app_home_welcome')]
     public function welcome(): Response
     {
         // If user is already authenticated, redirect to home page

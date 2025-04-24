@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome to Complaint Management System{% endblock %}
+
+{% block body %}
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">Complaint Management System</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">
+            Our complaint management system allows you to submit and track your complaints efficiently. 
+            We value your feedback and are committed to addressing your concerns promptly.
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            {% if app.user %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_admin_complaints') }}" class="btn btn-primary btn-lg px-4 gap-3">Admin Dashboard</a>
+                {% else %}
+                    <a href="{{ path('app_user_dashboard') }}" class="btn btn-primary btn-lg px-4 gap-3">My Dashboard</a>
+                    <a href="{{ path('app_user_complaint_new') }}" class="btn btn-outline-secondary btn-lg px-4">Submit Complaint</a>
+                {% endif %}
+            {% else %}
+                <a href="{{ path('app_login') }}" class="btn btn-primary btn-lg px-4 gap-3">Login</a>
+                <a href="{{ path('app_register') }}" class="btn btn-outline-secondary btn-lg px-4">Register</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container px-4 py-5">
+    <h2 class="pb-2 border-bottom">How It Works</h2>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+        <div class="col d-flex align-items-start">
+            <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-1-circle" viewBox="0 0 16 16">
+                    <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M9.283 4.002V12H7.971V5.338h-.065L6.072 6.656V5.385l1.899-1.383z"/>
+                </svg>
+            </div>
+            <div>
+                <h3 class="fs-2">Submit</h3>
+                <p>Register an account and submit your complaint with a detailed description.</p>
+            </div>
+        </div>
+        <div class="col d-flex align-items-start">
+            <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-2-circle" viewBox="0 0 16 16">
+                    <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.646 6.24v.07H5.375v-.064c0-1.213.879-2.402 2.637-2.402 1.582 0 2.613.949 2.613 2.215 0 1.002-.6 1.667-1.287 2.43l-.096.107-1.974 2.22v.077h3.498V12H5.422v-.832l2.97-3.293c.434-.475.903-1.008.903-1.705 0-.744-.557-1.236-1.313-1.236-.843 0-1.336.615-1.336 1.306"/>
+                </svg>
+            </div>
+            <div>
+                <h3 class="fs-2">Track</h3>
+                <p>Monitor the status of your complaint through your personal dashboard.</p>
+            </div>
+        </div>
+        <div class="col d-flex align-items-start">
+            <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-3-circle" viewBox="0 0 16 16">
+                    <path d="M7.918 8.414h-.879V7.342h.838c.78 0 1.348-.522 1.342-1.237 0-.709-.563-1.195-1.348-1.195-.79 0-1.312.498-1.348 1.055H5.275c.036-1.137.95-2.115 2.625-2.121 1.594-.012 2.608.885 2.637 2.062.023 1.137-.885 1.776-1.482 1.875v.07c.703.07 1.71.64 1.734 1.917.024 1.459-1.277 2.396-2.93 2.396-1.705 0-2.707-.967-2.754-2.144H6.33c.059.597.68 1.06 1.541 1.066.973.006 1.6-.563 1.588-1.354-.006-.779-.621-1.318-1.541-1.318"/>
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8"/>
+                </svg>
+            </div>
+            <div>
+                <h3 class="fs-2">Resolve</h3>
+                <p>Our team will review and resolve your complaint as quickly as possible.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

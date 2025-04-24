@@ -2,36 +2,63 @@
 
 namespace App\EventListener;
 
-use App\Event\ComplaintEvent;
-use App\Service\KeywordAnalyzer;
+use App\Entity\Complaint;
+use App\Service\ComplaintAnalyzer;
+use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
+use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener(event: ComplaintEvent::class)]
-class ComplaintEventListener
+class ComplaintEventListener implements EventSubscriberInterface
 {
     public function __construct(
-        private KeywordAnalyzer $keywordAnalyzer,
-        private LoggerInterface $logger
+        private LoggerInterface $logger,
+        private ComplaintAnalyzer $complaintAnalyzer
     ) {
     }
 
-    public function __invoke(ComplaintEvent $event): void
+    public function getSubscribedEvents(): array
     {
-        $complaint = $event->getComplaint();
-        $tags = $this->keywordAnalyzer->analyzeComplaint($complaint);
-        
-        if (in_array('urgent', $tags)) {
-            $this->logger->info('Urgent complaint submitted', [
-                'id' => $complaint->getId(),
-                'title' => $complaint->getTitle()
+        return [
+            Events::postPersist,
+            Events::postUpdate,
+        ];
+    }
+
+    public function postPersist(LifecycleEventArgs $args): void
+    {
+        $entity = $args->getObject();
+
+        if ($entity instanceof Complaint) {
+            $this->logger->info('New complaint submitted: {title}', [
+                'id' => $entity->getId(),
+                'title' => $entity->getTitle(),
+                'status' => $entity->getStatus()
+            ]);
+            
+            // Analyze the complaint for keywords
+            $tags = $this->complaintAnalyzer->analyzeComplaint($entity);
+            
+            if (in_array('urgent', $tags)) {
+                // You could set a flag or send a notification for urgent complaints
+                $this->logger->alert('URGENT complaint detected: {title}', [
+                    'id' => $entity->getId(),
+                    'title' => $entity->getTitle()
+                ]);
+            }
+        }
+    }
+
+    public function postUpdate(LifecycleEventArgs $args): void
+    {
+        $entity = $args->getObject();
+
+        if ($entity instanceof Complaint) {
+            $this->logger->info('Complaint updated: {title}', [
+                'id' => $entity->getId(),
+                'title' => $entity->getTitle(),
+                'status' => $entity->getStatus()
             ]);
         }
-        
-        $this->logger->info('Complaint submitted', [
-            'id' => $complaint->getId(),
-            'title' => $complaint->getTitle(),
-            'tags' => $tags
-        ]);
     }
 }
