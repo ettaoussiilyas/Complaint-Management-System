@@ -8,14 +8,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
-    // Remove the root route from here to avoid conflict
-    // #[Route('/', name: 'app_home')]
     
-    // Add a new dashboard route instead
     #[Route('/dashboard', name: 'app_home')]
     public function index(): Response
     {
-        // If user is not authenticated, redirect to welcome page
+        // If user is not authenticated,we must redirect him welcome page
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_welcome');
         }

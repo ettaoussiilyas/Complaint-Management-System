@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ComplaintRepository;
+use App\Entity\Complaint;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +27,13 @@ class AdminController extends AbstractController
         $status = $request->query->get('status');
         
         if ($status) {
-            $complaints = $this->complaintRepository->findByStatus($status);
+            // Cache complaints by status
+            $cacheKey = 'admin.complaints_by_status.' . $status;
+            $complaints = $this->cache->get($cacheKey, function (ItemInterface $item) use ($status) {
+                $item->expiresAfter(1800); // Cache for 30 minutes
+                return $this->complaintRepository->findByStatus($status);
+            });
+            
             return $this->render('admin/complaints.html.twig', [
                 'complaints' => $complaints,
                 'current_status' => $status
@@ -54,12 +61,22 @@ class AdminController extends AbstractController
         }
         
         $newStatus = $request->request->get('status');
+        $oldStatus = $complaint->getStatus();
+        
         if (in_array($newStatus, ['Pending', 'In Progress', 'Resolved'])) {
             $complaint->setStatus($newStatus);
             $this->complaintRepository->getEntityManager()->flush();
             
-            // Clear the cache when a complaint status is updated
+            // Clear all relevant caches when a complaint status is updated
             $this->cache->delete('admin.all_complaints');
+            
+            // Clear the old status cache if it exists
+            if ($oldStatus) {
+                $this->cache->delete('admin.complaints_by_status.' . $oldStatus);
+            }
+            
+            // Clear the new status cache
+            $this->cache->delete('admin.complaints_by_status.' . $newStatus);
             
             $this->addFlash('success', 'Complaint status updated successfully');
         }
